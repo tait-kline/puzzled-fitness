@@ -1,6 +1,7 @@
 package com.group9.puzzledfitness.config;
 
 import com.group9.puzzledfitness.models.Workout;
+import com.group9.puzzledfitness.models.WorkoutType;
 import com.group9.puzzledfitness.services.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,11 +24,13 @@ public class SeedData implements CommandLineRunner {
             workout1.setTitle("Workout 1 Title");
             workout1.setNotes("Workout 1 Notes");
             workout1.setIntensityLevel(1);
+            workout1.setWorkoutType(WorkoutType.RUN);
 
             Workout workout2 = new Workout();
             workout2.setTitle("Workout 2 Title");
             workout2.setNotes("Workout 2 Notes");
             workout2.setIntensityLevel(2);
+            workout2.setWorkoutType(WorkoutType.WEIGHTS);
 
             workoutService.save(workout1);
             workoutService.save(workout2);

@@ -19,6 +19,7 @@ public class Workout {
     private String notes;
     private int intensityLevel;
     private LocalDateTime dateTime;
+    private WorkoutType workoutType;
 
     public void setId(Long id) {
         this.id = id;
@@ -39,9 +40,15 @@ public class Workout {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
+    public void setWorkoutType(WorkoutType workoutType) {
+        this.workoutType = workoutType;
+    }
 
     public Long getId() {
         return id;
+    }
+    public WorkoutType getWorkoutType() {
+        return workoutType;
     }
 
     public String getTitle() {

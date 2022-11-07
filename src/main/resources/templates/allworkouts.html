@@ -12,7 +12,7 @@
         <hr />
         <div class="workouts-container">
             <div class="workouts" th:each="workout : ${workouts}">
-                <h2 th:text="'Date: ' + ${workout.dateTime}">Date Time</h2>
+                <h2 th:text="${workout.workoutType}+' at '+${workout.dateTime}">Type and DateTime</h2>
                 <h5 th:text="'Title: ' + ${workout.title}">Title</h5>
                 <p th:text="'Intensity Level (1-10): ' + ${workout.intensityLevel}">Intensity</p>
                 <p th:text="'Notes: ' + ${workout.notes}">Notes</p>

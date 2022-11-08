@@ -1,5 +1,7 @@
 package com.group9.puzzledfitness.models;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -15,6 +17,11 @@ public class Workout {
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @NonNull
+    @ManyToOne
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    private Account account;
     private String title;
     private String notes;
     private int intensityLevel;
@@ -23,6 +30,15 @@ public class Workout {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @NonNull
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(@NonNull Account account) {
+        this.account = account;
     }
 
     public void setTitle(String title) {

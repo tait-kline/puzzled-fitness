@@ -1,7 +1,9 @@
 package com.group9.puzzledfitness.models;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -21,6 +23,12 @@ public class Account {
 
     @OneToMany(mappedBy = "account")
     private List<Workout> workouts;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "account_authority",
+        joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
+    private Set<Authority> authorities = new HashSet<>();
 
     public Account() {
     }
@@ -71,5 +79,23 @@ public class Account {
 
     public void setWorkouts(List<Workout> workouts) {
         this.workouts = workouts;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
 }

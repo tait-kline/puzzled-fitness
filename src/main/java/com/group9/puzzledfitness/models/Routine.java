@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.*;
 
 
-@Entity
-@Table
+//@Entity
+//@Table
 public class Routine {
     private List<List<Workout>> workouts;
 

@@ -17,6 +17,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools:2.7.5'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.7.5'
+	implementation 'org.springframework.boot:spring-boot-starter-security:3.0.0'
+	//implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.0.RELEASE' this version causes issues for some reason
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

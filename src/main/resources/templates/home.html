@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +11,9 @@
     <div class="container">
         <h1>View All Workouts</h1>
         <hr />
+        <ul>
+            <li><a th:href="@{/workouts/new}">Add New Workout</a></li>
+        </ul>
         <div class="workouts-container">
             <div class="workouts" th:each="workout : ${workouts}">
                 <h2>
@@ -24,10 +28,18 @@
             </div>
         </div>
         <hr />
-        <ul>
-            <li><a th:href="@{/register}">Register</a><li>
-            <li><a th:href="@{/login}">Login</a><li>
+        <ul sec:authorize="!isAuthenticated()">
+            <li><a th:href="@{/register}">Register</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
         </ul>
+        <div sec:authorize="isAuthenticated()">
+            <form action="#" th:action="@{/logout}" method="POST">
+                  <div>
+                      <label> Hi, <span sec:authentication="name">Username</span></label>
+                  </div>
+                <button type="submit">Logout</button>
+            </form>
+        </div>
     </div>
 </body>
 </html>

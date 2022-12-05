@@ -18,8 +18,6 @@ import java.util.Optional;
 @Controller
 public class WorkoutController {
 
-    public static final int TARGET_WORKOUTS = 10;
-
     @Autowired
     private WorkoutService workoutService;
     @Autowired
@@ -27,12 +25,8 @@ public class WorkoutController {
 
     @GetMapping("/")
     public String getAllWorkouts(Model model) {
-        //acct = accountService.
         List<Workout> workouts = workoutService.getAll();
         model.addAttribute("workouts", workouts);
-        int progressPct = workouts.size() > TARGET_WORKOUTS? 100 : (int)Math.ceil((workouts.size() *100) / TARGET_WORKOUTS);
-        model.addAttribute("progress", progressPct);
-        model.addAttribute("workoutGoal", TARGET_WORKOUTS);
         return "home";
     }
 

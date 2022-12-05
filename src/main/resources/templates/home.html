@@ -12,38 +12,49 @@
 </head>
 <body>
 <div class="container-fluid">
-    <h1>View All Workouts</h1>
+    <h1>Welcome to Workouts</h1>
     <hr/>
 
-    <a class="btn btn-primary" th:href="@{/workouts/new}">Add New Workout</a>
 
-
-    <div class="workouts-container">
-        <div class="workouts" th:each="workout : ${workouts}">
-            <h2>
-                <a th:href="@{'/workouts/' + ${workout.id}}"
-                   th:text="${workout.workoutType}+' at '+${workout.dateTime}"> Type and DateTime
-                </a>
-            </h2>
-            <h5 th:text="'Title: ' + ${workout.title}">Title</h5>
-            <p th:text="'Intensity Level (1-10): ' + ${workout.intensityLevel}">Intensity</p>
-            <p th:text="'Notes: ' + ${workout.notes}">Notes</p>
-            <p th:text="'User: ' + ${workout.account.firstName}">First Name</p>
-        </div>
-    </div>
-    <hr/>
-    <ul sec:authorize="!isAuthenticated()">
-        <li><a th:href="@{/register}">Register</a></li>
-        <li><a th:href="@{/login}">Login</a></li>
-    </ul>
     <div sec:authorize="isAuthenticated()">
-        <form action="#" th:action="@{/logout}" method="POST">
-            <div>
-                <label> Hi, <span sec:authentication="name">Username</span></label>
+        <div>
+            <label> Hi, <span sec:authentication="name">Username</span> </label>
+            <h4 th:text="|Your total workouts: ${workouts.size()}, with goal of ${workoutGoal}.|"> total workouts.</h4>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar"  th:aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" th:style="|min-width: 2em; width: ${progress}%;|">
+                <span th:text="|${progress}%|">50%</span>
             </div>
+        </div>
+        <div class="workouts-container">
+            <a class="btn btn-primary" th:href="@{/workouts/new}">Add New Workout</a>
+            <div class="workouts" th:each="workout : ${workouts}">
+                <h2>
+                    <a th:href="@{'/workouts/' + ${workout.id}}"
+                       th:text="${workout.workoutType}+' at '+${workout.dateTime}"> Type and DateTime
+                    </a>
+                </h2>
+                <h5 th:text="'Title: ' + ${workout.title}">Title</h5>
+                <p th:text="'Intensity Level (1-10): ' + ${workout.intensityLevel}">Intensity</p>
+                <p th:text="'Notes: ' + ${workout.notes}">Notes</p>
+                <p th:text="'User: ' + ${workout.account.firstName}">First Name</p>
+            </div>
+        </div>
+        <hr/>
+        <form action="#" th:action="@{/logout}" method="POST">
             <button type="submit">Logout</button>
         </form>
+
     </div>
+    <hr/>
+    <div class="" sec:authorize="!isAuthenticated()">
+        <h2>Please login or register to manage your workouts </h2>
+        <ul sec:authorize="!isAuthenticated()">
+            <li><a th:href="@{/register}">Register</a></li>
+            <li><a th:href="@{/login}">Login</a></li>
+        </ul>
+    </div>
+
 </div>
 </body>
 </html>

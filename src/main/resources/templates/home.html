@@ -18,7 +18,13 @@
 
     <div sec:authorize="isAuthenticated()">
         <div>
-            <label> Hi, <span sec:authentication="name">Username</span></label>
+            <label> Hi, <span sec:authentication="name">Username</span> </label>
+            <h4 th:text="|Your total workouts: ${workouts.size()}, with goal of ${workoutGoal}.|"> total workouts.</h4>
+        </div>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped active" role="progressbar"  th:aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" th:style="|min-width: 2em; width: ${progress}%;|">
+                <span th:text="|${progress}%|">50%</span>
+            </div>
         </div>
         <div class="workouts-container">
             <a class="btn btn-primary" th:href="@{/workouts/new}">Add New Workout</a>

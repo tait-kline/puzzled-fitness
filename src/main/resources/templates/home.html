@@ -97,9 +97,6 @@
                             </a>
                         </h2>
                         <h5 th:text="'Title: ' + ${workout.title}">Title</h5>
-                        <p th:text="'Intensity Level (1-10): ' + ${workout.intensityLevel}">Intensity</p>
-                        <p th:text="'Notes: ' + ${workout.notes}">Notes</p>
-                        <p th:text="'User: ' + ${workout.account.firstName}">First Name</p>
                     </div>
                 </div></td>
                 <td>
@@ -117,15 +114,6 @@
         </form>
 
     </div>
-    <hr/>
-    <div class="" sec:authorize="!isAuthenticated()">
-        <h2>Please login or register to manage your workouts </h2>
-        <ul sec:authorize="!isAuthenticated()">
-            <li><a th:href="@{/register}">Register</a></li>
-            <li><a th:href="@{/login}">Login</a></li>
-        </ul>
-    </div>
-
 </div>
 </body>
 </html>

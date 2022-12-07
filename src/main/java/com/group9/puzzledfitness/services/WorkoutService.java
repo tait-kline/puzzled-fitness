@@ -22,6 +22,10 @@ public class WorkoutService {
         return workoutRepository.findAll();
     }
 
+    public List<Workout> getAllByUserId(long accountId) {
+        return workoutRepository.findAllByAccountId(accountId);
+    }
+
     public Workout save(Workout workout) {
         if (workout.getId() == null) {
             workout.setDateTime(LocalDateTime.now());

@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -49,6 +46,18 @@ public class WorkoutController {
             Workout workout = optionalWorkout.get();
             model.addAttribute("workout", workout);
             return "workout";
+        } else {
+            return "404";
+        }
+    }
+
+    @GetMapping("/workouts/{id}/delete")
+    public String deleteWorkout(@PathVariable Long id) {
+        Optional<Workout> optionalWorkout = workoutService.getById(id);
+        if (optionalWorkout.isPresent()) {
+            Workout workout = optionalWorkout.get();
+            workoutService.delete(workout);
+            return "redirect:/";
         } else {
             return "404";
         }

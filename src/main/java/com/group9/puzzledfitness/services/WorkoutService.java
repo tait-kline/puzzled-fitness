@@ -33,4 +33,8 @@ public class WorkoutService {
 
         return workoutRepository.save(workout);
     }
+
+    public void delete(Workout workout) {
+        workoutRepository.delete(workout);
+    }
 }

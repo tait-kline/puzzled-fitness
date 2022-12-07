@@ -72,6 +72,7 @@
 
     <div sec:authorize="isAuthenticated()">
         <div>
+
             <h2> Hi, <span sec:authentication="name">Username</span> </h2>
             <h4 th:text="|Your total workouts: ${workouts.size()}, with goal of ${workoutGoal}.|"> total workouts.</h4>
         </div>
@@ -114,6 +115,7 @@
         <form action="#" th:action="@{/logout}" method="POST">
             <button type="submit">Logout</button>
         </form>
+
     </div>
     <hr/>
     <div class="" sec:authorize="!isAuthenticated()">

@@ -1,16 +1,70 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- Vertex Shader -->
+<script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 vPosition;
+    attribute vec4 vColor;
+    varying vec4 color;
+
+    uniform mat4 ctm;
+    uniform mat4 model_view;
+    uniform mat4 projection;
+
+    // toRHR (to right-hand rule)
+    // DO NOT MODIFY THE toRHR VARIABLE
+    mat4 toRHR = mat4(vec4(1,0,0,0),
+		      vec4(0,1,0,0),
+		      vec4(0,0,-1,0),
+		      vec4(0,0,0,1));
+
+    void main()
+    {
+	vec4 position = projection * model_view * ctm * vPosition;
+	color = vColor;
+
+	// DO NOT MODIFY THE NEXT LINE
+	gl_Position = toRHR * position;
+    }
+
+</script>
+
+<!-- Fragment Shader -->
+<script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+
+    varying vec4 color;
+
+    void main()
+    {
+	gl_FragColor = color;
+    }
+
+</script>
+
+<!-- Load user-defined libraries and programs -->
+<script type="text/javascript" src="/js/initShaders.js"></script>
+<!-- Add more libraries here -->
+<script type="text/javascript" src="/js/linearAlg.js"></script>
+<script type="text/javascript" src="/js/shapes&animations.js"></script>
+<!-- The main program -->
+<script type="text/javascript" src="/js/puzzle.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
-          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- CSS only -->
+    <!--link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"-->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/prism-okaidia.css">
+    <link rel="stylesheet" href="/css/custom.min.css">
 </head>
-<body>
+<body onload="main();">
 <div class="container-fluid">
     <h1>Welcome to Workouts</h1>
     <hr/>
@@ -18,33 +72,48 @@
 
     <div sec:authorize="isAuthenticated()">
         <div>
-            <label> Hi, <span sec:authentication="name">Username</span> </label>
+            <h2> Hi, <span sec:authentication="name">Username</span> </h2>
             <h4 th:text="|Your total workouts: ${workouts.size()}, with goal of ${workoutGoal}.|"> total workouts.</h4>
         </div>
         <div class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar"  th:aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="100" th:style="|min-width: 2em; width: ${progress}%;|">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" th:aria-valuenow="${progress}"
+                 aria-valuemin="0" aria-valuemax="100" th:style="|min-width: 2em; width: ${progress}%;|">
                 <span th:text="|${progress}%|">50%</span>
             </div>
         </div>
-        <div class="workouts-container">
-            <a class="btn btn-primary" th:href="@{/workouts/new}">Add New Workout</a>
-            <div class="workouts" th:each="workout : ${workouts}">
-                <h2>
-                    <a th:href="@{'/workouts/' + ${workout.id}}"
-                       th:text="${workout.workoutType}+' at '+${workout.dateTime}"> Type and DateTime
-                    </a>
-                </h2>
-                <h5 th:text="'Title: ' + ${workout.title}">Title</h5>
-                <p th:text="'Intensity Level (1-10): ' + ${workout.intensityLevel}">Intensity</p>
-                <p th:text="'Notes: ' + ${workout.notes}">Notes</p>
-                <p th:text="'User: ' + ${workout.account.firstName}">First Name</p>
-            </div>
-        </div>
+        <hr/>
+        <table class="table table-hover">
+            <tbody>
+
+            <tr>
+                <td><div class="workouts-container">
+                    <a class="btn btn-primary" th:href="@{/workouts/new}">Add New Workout</a>
+                    <hr/>
+                    <div class="workouts" th:each="workout : ${workouts}">
+                        <h2>
+                            <a th:href="@{'/workouts/' + ${workout.id}}"
+                               th:text="${workout.workoutType}+' at '+${workout.dateTime}"> Type and DateTime
+                            </a>
+                        </h2>
+                        <h5 th:text="'Title: ' + ${workout.title}">Title</h5>
+                        <p th:text="'Intensity Level (1-10): ' + ${workout.intensityLevel}">Intensity</p>
+                        <p th:text="'Notes: ' + ${workout.notes}">Notes</p>
+                        <p th:text="'User: ' + ${workout.account.firstName}">First Name</p>
+                    </div>
+                </div></td>
+                <td>
+                    <canvas id="gl-canvas" width="512" height="512">
+                        Sorry;
+                    </canvas>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
         <hr/>
         <form action="#" th:action="@{/logout}" method="POST">
             <button type="submit">Logout</button>
         </form>
-
     </div>
     <hr/>
     <div class="" sec:authorize="!isAuthenticated()">

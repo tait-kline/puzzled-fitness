@@ -77,20 +77,33 @@
         <div>
 
             <h2> Hi, <span sec:authentication="name">Username</span></h2>
-            <h4 th:text="|Your total workouts: ${workouts.size()}, with goal of ${workoutGoal}.|"> total workouts.</h4>
+            <h4 th:unless="${workoutGoal == 0}" th:text="|Your total workouts: ${workouts.size()}, with goal of ${workoutGoal}.|"> total workouts.</h4>
         </div>
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped active" role="progressbar" th:aria-valuenow="${progress}"
+        <div class="progress" th:unless="${workoutGoal == 0}" >
+
+            <div class="progress-bar progress-bar-striped active" role="progressbar" th:aria-valuenow="${progress} "
                  aria-valuemin="0" aria-valuemax="100" th:style="|min-width: 2em; width: ${progress}%;|">
                 <span th:text="|${progress}%|">50%</span>
             </div>
         </div>
+<!--        <div th:if="${workoutGoal == 0}">-->
+<!--            <form action="#" th:action="@{/add-goal}" method="POST">-->
+<!--                <input id="goal" class="form-control" type="text" name="goal"/>-->
+<!--                <button type="submit" class = "btn btn-info">Add New Goal</button>-->
+<!--            </form>-->
+<!--        </div>-->
         <hr/>
         <table class="table table-hover">
             <tbody>
 
             <tr>
-                <td><a class="btn btn-primary" th:href="@{/workouts/new}">Add New Workout</a>
+                <td>
+                    <span>
+                        <a class="btn btn-primary" th:href="@{/workouts/new}">Add New Workout</a>
+                    </span>
+                    <span>
+                        <a class="btn btn-primary" th:href="@{/add-goal}">Add New Goal</a>
+                    </span>
                     <hr/>
                     <div class="accordion" id="accordionExample">
                         <div class="workouts" th:each="workout : ${workouts}">
@@ -109,14 +122,18 @@
                                         <h5 th:text="'Title: ' + ${workout.title}">Title</h5>
                                         <span th:text="'Intensity Level (1-10): ' + ${workout.intensityLevel}">Intensity</span><br/>
                                         <span th:text="'Notes: ' + ${workout.notes}">Notes</span><br/>
-                                        <span th:text="'User: ' + ${workout.account.firstName}">First Name</span>
+                                        <span>
+                                            <form action="#" th:action="@{'/workouts/' + ${workout.id}} + '/delete'" method="GET">
+                                                <button type="submit">Delete Workout</button>
+                                            </form>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                 </td>
                 <td>
-                    <canvas id="gl-canvas" width="512" height="512">
+                    <canvas th:if="${workoutGoal == workouts.size()}" th:unless="${workoutGoal == 0}" id="gl-canvas" width="512" height="512">
                         Sorry;
                     </canvas>
                 </td>

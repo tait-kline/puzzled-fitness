@@ -20,6 +20,7 @@ public class Account {
     private String password;
     private String firstName;
     private String lastName;
+    private int goal;
 
     @OneToMany(mappedBy = "account")
     private List<Workout> workouts;
@@ -71,6 +72,13 @@ public class Account {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    public int getGoal() {
+        return goal;
+    }
+
+    public void setGoal(int goal) {
+        this.goal = goal;
     }
 
     public List<Workout> getWorkouts() {

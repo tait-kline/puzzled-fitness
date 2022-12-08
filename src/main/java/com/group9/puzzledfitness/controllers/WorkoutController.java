@@ -17,8 +17,6 @@ import java.util.Optional;
 @Controller
 public class WorkoutController {
 
-    public static final int TARGET_WORKOUTS = 10;
-
     @Autowired
     private WorkoutService workoutService;
     @Autowired
@@ -30,13 +28,47 @@ public class WorkoutController {
     public String getAllUserWorkouts(Model model, Principal principal) {
         Optional<Account> account = accountService.findByEmail(principal.getName());
         if (account.isPresent()) {
-            List<Workout> workouts = workoutService.getAllByUserId(account.get().getId());
+            Account userAccount = account.get();
+            List<Workout> workouts = workoutService.getAllByUserId(userAccount.getId());
             model.addAttribute("workouts", workouts);
-            int progressPct = workouts.size() > TARGET_WORKOUTS? 100 : (int)Math.ceil((workouts.size() *100) / TARGET_WORKOUTS);
+
+            int targetWorkouts = userAccount.getGoal();
+            int progressPct;
+            if (targetWorkouts > 0) {
+                progressPct = workouts.size() > targetWorkouts? 100 : (int)Math.ceil((workouts.size() *100) / targetWorkouts);
+            } else {
+                progressPct = 0;
+            }
+
             model.addAttribute("progress", progressPct);
-            model.addAttribute("workoutGoal", TARGET_WORKOUTS);
+            model.addAttribute("workoutGoal", targetWorkouts);
         }
         return "home";
+    }
+
+    @PostMapping("/add-goal")
+    public String addGoal(@ModelAttribute Account viewAccount, Principal principal) {
+        Optional<Account> optAccount = accountService.findByEmail(principal.getName());
+        if (optAccount.isPresent()) {
+            Account userAccount = optAccount.get();
+            viewAccount.setPassword(userAccount.getPassword());
+            viewAccount.setAuthorities(userAccount.getAuthorities());
+            viewAccount.setWorkouts(userAccount.getWorkouts());
+            viewAccount.setFirstName(userAccount.getFirstName());
+            viewAccount.setId(userAccount.getId());
+            viewAccount.setLastName(userAccount.getLastName());
+            viewAccount.setEmail(userAccount.getEmail());
+            accountService.save(viewAccount);
+            return "redirect:/";
+        }
+        return "404";
+    }
+
+    @GetMapping("/add-goal")
+    public String addGoal(Principal principal, Model model) {
+        Account account = new Account();
+        model.addAttribute("account", account);
+        return "add-goal";
     }
 
     @GetMapping("/workouts/{id}")

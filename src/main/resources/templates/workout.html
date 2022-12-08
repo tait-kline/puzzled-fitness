@@ -25,7 +25,7 @@
             <p th:text="'Notes: ' + ${workout.notes}">Notes</p>
             <p th:text="'User: ' + ${workout.account.firstName}">First Name</p>
         </div>
-        <form action="#" th:action="@{'/workouts/' + ${workout.id}} + '/delete'" method="DELETE">
+        <form action="#" th:action="@{'/workouts/' + ${workout.id}} + '/delete'" method="GET">
             <button type="submit">Delete Workout</button>
         </form>
     </div>

@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Workout</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/prism-okaidia.css">
+    <link rel="stylesheet" href="/css/custom.min.css">
 </head>
 <body>
 <div class="container">
@@ -13,25 +17,30 @@
             <input type="hidden" th:field="*{account}"/>
             <input type="hidden" th:field="*{dateTime}"/>
         <h2>Add New Workout</h2>
+        <hr/>
         <div class="form-group">
-            <label for="new-workout-title">Title</label>
+            <label for="new-workout-title" class="col-sm-2 control-label">Title</label>
             <input id="new-workout-title" type="text" th:field="*{title}" placeholder="Title"/>
         </div>
+        <hr/>
         <div class="form-group">
-            <label for="new-workout-notes">Notes</label>
+            <label for="new-workout-notes" class="col-sm-2 control-label">Notes</label>
             <textarea id="new-workout-notes" th:field="*{notes}" placeholder="notes"></textarea>
         </div>
+        <hr/>
         <div class="form-group">
-            <label for="new-workout-intensity">Intensity (1-10):</label>
+            <label for="new-workout-intensity" class="col-sm-2 control-label">Intensity (1-10):</label>
             <input  id="new-workout-intensity" th:field="*{intensityLevel}" type="number" min="1" max="10">
         </div>
+        <hr/>
         <div class="form-group">
             <select name="type" th:field="*{workoutType}">
                 <option th:each="type : ${T(com.group9.puzzledfitness.models.WorkoutType).values()}"
                         th:value="${type}" th:text="${type}"></option>
             </select>
         </div>
-        <button type="submit">Add Workout</button>
+        <hr/>
+        <button type="submit" class="btn btn-success">Add Workout</button>
     </form>
 </div>
 </body>
